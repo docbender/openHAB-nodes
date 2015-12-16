@@ -33,6 +33,10 @@ class simpleBinary
     int size() { return _size; };
     // Process data received by UART 
     void processSerial();
+    // Set pin number to use as RTS signal
+    void enableRTS(int pinNumber);    
+    // Set delay between receive and send message (in ms) for stabilization of communication line 
+    void setSendDelay(unsigned int delayms);
 
   private:
      //device address on line (RS485 address)
@@ -44,6 +48,10 @@ class simpleBinary
      //buffer for incoming serial data   
      char serbuf[64];
      int serbuflen;
+     bool RTSenabled = false;
+     int RTSpin;
+     unsigned int sendDelay = 0;
+     unsigned long receiveTime = 0;
 
 
      void sendData(itemData *item);
@@ -54,6 +62,7 @@ class simpleBinary
      void sendWrongData(byte crc);
      void sendOK();
      void checkNewData();
+     void write(char* data, int length);
 
 }; 
 
